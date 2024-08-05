@@ -2,7 +2,11 @@ package com.initial.springboot.controller;
 
 import com.initial.springboot.model.Product;
 import com.initial.springboot.service.ProductService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,13 +19,19 @@ public class ProductController {
     ProductService service;
 
     @GetMapping("/products")
-    public List<Product> getProducts(){
-        return service.getProducts();
+    public ResponseEntity<List<Product>> getProducts(){
+        return new ResponseEntity<>(service.getProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/products/{prodId}")
-    public Product getProductById(@PathVariable int prodId){
-        return service.getProductById(prodId);
+    public ResponseEntity<Product> getProductById(@PathVariable int prodId){
+
+        Product p = service.getProductById(prodId);
+
+        if(p != null)
+            return new ResponseEntity<>(p, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/add-product")
@@ -29,13 +39,19 @@ public class ProductController {
         service.addProduct(prod);
     }
 
-    @PutMapping("/update-product")
-    public void updateProduct(@RequestBody Product prod){
-        service.updateProduct(prod);
+    @PutMapping("/update-product/{prodId}")
+    public void updateProduct(@RequestBody Product prod, @PathVariable int prodId){
+        service.updateProduct(prod, prodId);
     }
 
     @DeleteMapping("/delete-product/{prodId}")
     public void deleteProduct(@PathVariable int prodId){
         service.deleteProduct(prodId);
     }
+
+//    @GetMapping("/search-products/{keyword}")
+//    public ResponseEntity<List<Product>> searchProducts(@PathVariable String keyword){
+//        List<Product> p = service.searchProducts(keyword);
+//        return new ResponseEntity<>(p, HttpStatus.OK);
+//    }
 }

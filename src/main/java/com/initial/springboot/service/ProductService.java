@@ -29,11 +29,18 @@ public class ProductService {
         repo.save(prod);
     }
 
-    public void updateProduct(Product prod) {
-        repo.save(prod);
+    public void updateProduct(Product prod, int prodId) {
+        Product p = repo.findById(prodId).orElse(null);
+
+        if(p != null)
+            repo.save(prod);
     }
 
     public void deleteProduct(int prodId) {
         repo.deleteById(prodId);
     }
+
+//    public List<Product> searchProducts(String keyword) {
+//        return repo.searchProducts(keyword);
+//    }
 }

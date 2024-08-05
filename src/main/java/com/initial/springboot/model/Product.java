@@ -29,9 +29,7 @@ public class Product {
     private int price;
     private String brand;
     private String category;
-    private Date releaseDate;
-    private boolean avalaible;
-    private int quantity;
+    private int stock;
 
 
 
