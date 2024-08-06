@@ -3,6 +3,8 @@ package com.initial.springboot.service;
 import com.initial.springboot.model.Product;
 import com.initial.springboot.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,8 +27,10 @@ public class ProductService {
         return repo.findById(prodId).orElse(new Product());
     }
 
-    public void addProduct(Product prod){
+    public ResponseEntity<String> addProduct(Product prod){
         repo.save(prod);
+
+        return ResponseEntity.ok().body("Product added Successfully");
     }
 
     public void updateProduct(Product prod, int prodId) {
@@ -36,8 +40,14 @@ public class ProductService {
             repo.save(prod);
     }
 
-    public void deleteProduct(int prodId) {
+    public ResponseEntity<String> deleteProduct(int prodId) {
+        Product temp = repo.findById(prodId).orElse(null);
+
+        if(temp == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product Not Found");
+
         repo.deleteById(prodId);
+        return ResponseEntity.ok().body("Product Deleted Successfully");
     }
 
 //    public List<Product> searchProducts(String keyword) {

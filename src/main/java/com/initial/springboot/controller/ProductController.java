@@ -35,8 +35,8 @@ public class ProductController {
     }
 
     @PostMapping("/add-product")
-    public void addProduct(@RequestBody Product prod){
-        service.addProduct(prod);
+    public ResponseEntity<String> addProduct(@RequestBody Product prod){
+        return service.addProduct(prod);
     }
 
     @PutMapping("/update-product/{prodId}")
@@ -45,8 +45,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete-product/{prodId}")
-    public void deleteProduct(@PathVariable int prodId){
-        service.deleteProduct(prodId);
+    public ResponseEntity<String> deleteProduct(@PathVariable int prodId){
+        return service.deleteProduct(prodId);
     }
 
 //    @GetMapping("/search-products/{keyword}")
